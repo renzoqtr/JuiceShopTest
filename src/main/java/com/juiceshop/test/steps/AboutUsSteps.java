@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class AboutUsSteps {
 
-    private AboutUsPage page;
+    private final AboutUsPage page;
 
     public AboutUsSteps(WebDriver driver) {
         page = new AboutUsPage(driver);

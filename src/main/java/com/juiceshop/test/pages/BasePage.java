@@ -1,9 +1,8 @@
 package com.juiceshop.test.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -11,14 +10,21 @@ import java.util.List;
 
 public class BasePage {
 
-    private WebDriver driver;
-    private WebDriverWait doWait;
+    private final WebDriver driver;
+    private final WebDriverWait doWait;
+    private final FluentWait<WebDriver> waitFluently;
 
-    private static final int TIMELIMIT = 20;
+
+    private static final int TIMELIMIT = 10;
+    private static final int TIMELIMITSHORT = 5;
+
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         doWait = new WebDriverWait(driver, Duration.ofSeconds(TIMELIMIT));
+        waitFluently = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(TIMELIMITSHORT))
+                .pollingEvery(Duration.ofSeconds(1));
     }
 
     public void openPage(String url) {
@@ -40,7 +46,7 @@ public class BasePage {
         field.sendKeys(text);
     }
 
-    public void waitUntilVisible(By locator){
+    public void waitUntilVisible(By locator) {
         doWait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
@@ -49,7 +55,21 @@ public class BasePage {
     }
 
     public boolean isDisplayed(By locator) {
-        return doWait.until(ExpectedConditions.presenceOfElementLocated(locator)).isDisplayed();
+        boolean displayed;
+        try {
+            displayed = waitFluently.until(ExpectedConditions.presenceOfElementLocated(locator)).isDisplayed();
+        } catch (NoSuchElementException ex) {
+            displayed = false;
+        }
+        return displayed;
+    }
+
+    public void waitUntilElementIsNotPresent(By locator) {
+        try {
+            doWait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
+        } catch (TimeoutException ex) {
+
+        }
     }
 
     public WebDriver getDriver() {

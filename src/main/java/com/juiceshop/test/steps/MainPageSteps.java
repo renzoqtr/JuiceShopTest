@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 
 public class MainPageSteps {
 
-    private MainPage page;
+    private final MainPage page;
 
     public MainPageSteps(WebDriver driver) {
         page = new MainPage(driver);
@@ -31,9 +31,20 @@ public class MainPageSteps {
         return new SideNavBareSteps(page.getDriver());
     }
 
+    public JuicePageSteps selectJuice(String juiceName) {
+        page.getCards()
+                .stream()
+                .filter(cardName -> cardName.getText().contains(juiceName))
+                .findFirst()
+                .ifPresent(WebElement::click);
+
+        return new JuicePageSteps(page.getDriver());
+    }
+
+
     public void openPage() {
         page.open();
-        page.clickOnDismissModal();
+        page.removeModals();
     }
 
 }

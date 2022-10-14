@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 public class SideNavBareSteps {
 
-    private SideNavBarPage page;
+    private final SideNavBarPage page;
 
     public SideNavBareSteps(WebDriver driver) {
         page = new SideNavBarPage(driver);

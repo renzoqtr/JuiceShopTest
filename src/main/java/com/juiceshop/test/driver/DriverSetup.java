@@ -2,6 +2,7 @@ package com.juiceshop.test.driver;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverSetup {
@@ -9,18 +10,17 @@ public class DriverSetup {
     public static WebDriver getDriver(String Browser) {
         WebDriver driver;
         switch (Browser) {
-            case "Chrome": {
+            case "Chrome" -> {
                 driver = new ChromeDriver();
             }
-            break;
-            case "Firefox": {
+            case "Firefox" -> {
                 driver = new FirefoxDriver();
             }
-            break;
-            default: {
-                driver = new ChromeDriver();
+            default -> {
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--headless", "--ignore-certificate-errors");
+                driver = new ChromeDriver(options);
             }
-            break;
         }
         return driver;
     }

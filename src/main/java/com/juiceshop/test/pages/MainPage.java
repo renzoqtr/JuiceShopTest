@@ -14,6 +14,8 @@ public class MainPage extends BasePage {
     private static final By CARDIMG = By.cssSelector("div div img");
     private static final By DISMISSMODAL = By.cssSelector("#mat-dialog-0 button[aria-label='Close Welcome Banner']");
 
+    private static final By ACCEPTCOKIES = By.cssSelector("#cookieconsent\\:desc + div > a");
+
     public MainPage(WebDriver driver) {
         super(driver);
     }
@@ -35,8 +37,9 @@ public class MainPage extends BasePage {
         return CARDIMG;
     }
 
-    public void clickOnDismissModal() {
+    public void removeModals() {
         clickOnElement(DISMISSMODAL);
+        clickOnElement(ACCEPTCOKIES);
     }
 
 }
